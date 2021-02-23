@@ -118,12 +118,12 @@ webroot of your nginx installation. In this example it is
       # `location ~ /(\.|autotest|...)` which would otherwise handle requests
       # for `/.well-known`.
       location ^~ /.well-known {
-          # The following 6 rules are borrowed from `.htaccess`
+          # The following rules are borrowed from `.htaccess`
       
-          location = /.well-known/carddav     { return 301 /remote.php/dav/; }
-          location = /.well-known/caldav      { return 301 /remote.php/dav/; }
-          # Anything else is dynamically handled by Nextcloud
-          location ^~ /.well-known            { return 301 /index.php$uri; }
+          location = /.well-known/carddav { return 301 /remote.php/dav/; }
+          location = /.well-known/caldav { return 301 /remote.php/dav/; }
+          # Anything else, excluding ACME and PKI, is dynamically handled by Nextcloud
+          location ~ ^/\.well-known/(?!acme-challenge|pki-validation) { return 301 /index.php$request_uri; }
 
           try_files $uri $uri/ =404;
       }
@@ -233,13 +233,12 @@ The configuration differs from the "Nextcloud in webroot" configuration above in
       }
 
       location /.well-known {
-          # The following 6 rules are borrowed from `.htaccess`
-
-          location = /.well-known/carddav   { return 301 /nextcloud/remote.php/dav/; }
-          location = /.well-known/caldav    { return 301 /nextcloud/remote.php/dav/; }
-
-          # Anything else is dynamically handled by Nextcloud
-          location ^~ /.well-known          { return 301 /nextcloud/index.php$uri; }
+          # The following rules are borrowed from `.htaccess`
+      
+          location = /.well-known/carddav { return 301 /nextcloud/remote.php/dav/; }
+          location = /.well-known/caldav { return 301 /nextcloud/remote.php/dav/; }
+          # Anything else, excluding ACME and PKI, is dynamically handled by Nextcloud
+          location ~ ^/\.well-known/(?!acme-challenge|pki-validation) { return 301 /nextcloud/index.php$request_uri; }
 
           try_files $uri $uri/ =404;
       }
