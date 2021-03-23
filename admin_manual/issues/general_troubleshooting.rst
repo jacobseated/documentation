@@ -266,7 +266,18 @@ document root of your Web server and add the following lines::
       RewriteEngine on
       RewriteRule ^\.well-known/carddav /nextcloud/remote.php/dav [R=301,L]
       RewriteRule ^\.well-known/caldav /nextcloud/remote.php/dav [R=301,L]
+      RewriteRule ^.well-known/webfinger /nextcloud/index.php/.well-known/webfinger [R=301,L]
+      RewriteRule ^.well-known/nodeinfo /nextcloud/index.php/.well-known/nodeinfo [R=301,L]
     </IfModule>
+    
+.. note:: These redirects can also be added directly in your server configuration; you can even use the redirect directive, which is often easier than using mod_rewrite. 
+
+The following should also work::
+
+    Redirect 301 /.well-known/carddav /nextcloud/remote.php/dav
+    Redirect 301 /.well-known/caldav /nextcloud/remote.php/dav
+    Redirect 301 /.well-known/webfinger /nextcloud/index.php/.well-known/webfinger
+    Redirect 301 /.well-known/nodeinfo /nextcloud/index.php/.well-known/nodeinfo
 
 Make sure to change /nextcloud to the actual subfolder your Nextcloud instance is running in.
 
